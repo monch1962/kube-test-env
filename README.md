@@ -38,16 +38,16 @@ A generic performance test environment architecture is as follows...
 ## Test environments (on demand) 
 ### Test environment build steps
 - create a new Kubernetes namespace for the test environment
-- set up a stubbing mechanism for the test environment in separate node/s
-- set up any public cloud mocks in separate node/s
-- set up the system being tested in separate node/s, and link it to the stubbing mechanism and public cloud mocks
+- set up a stubbing mechanism for the test environment in separate pod/s
+- set up any public cloud mocks in separate pod/s
+- set up the system being tested in separate pod/s, and link it to the stubbing mechanism and public cloud mocks
 - populate any required data into the system being tested
 - create a "test-cases" volume
 - generate and/or pull the test cases to be executed from the test case repository, and store them in the "test-cases" volume
 - set up the "test runner" system/s in separate node/s, and mount the "test-cases" and "test-results" volumes to the "test runner" system/s
 
 ### Execution steps
-- execute test cases on the "test runner"/s, reading test cases from the "test-cases" volume and writing test results to the "test-results" volume
+- execute test cases on the "test runner" pod/s, reading test cases from the "test-cases" volume and writing test results to the "test-results" volume
 
 ### Test environment tear-down
 - delete the Kubernetes namespace for the test environment
