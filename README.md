@@ -16,6 +16,7 @@ Key test infrastructure elements are:
 - storage space to temporarily hold test execution results, until they are processed into the test management system. This would be mounted as a Kubernetes volume so that test execution results can be created and processed by separate systems. A flexible, standard, non tool-specific format such as jUnit is ideal for capturing test results
 - a mechanism for stubbing downstream dependencies of the system being tested
 - the system being tested
+- (optional) a mechanism for generating and/or loading data into the system being tested, to support test case execution
 - a "testrunner" system for executing test cases against the system being tested. For functional API testing, this could be a container running Postman/Newman, Karate; for functional UI testing, this could be a container running Playwright or one of the various Selenium test runners; for load testing, this could be a container running Artillery, Gatling, k6 or JMeter
 - a test code management system. Typically this would be a git repository of some sort, but it could also conceivably be a system such as TestRail
 - (optional) a Pact broker, designed to hold API contract tests
@@ -33,3 +34,20 @@ A generic performance test environment architecture is as follows...
 - create a Kubernetes volume to store test execution results until they are processed
 - configure the test results alerting mechanism to update the test results alerting mechanism and/or the test management system as new test execution results become available
 - deploy and configure a CI/CD toolset to execute test cases as necessary
+
+## Test environments (on demand) 
+### Test environment build steps
+- create a new Kubernetes namespace for the test environment
+- set up a stubbing mechanism for the test environment in separate node/s
+- set up any public cloud mocks in separate node/s
+- set up the system being tested in separate node/s, and link it to the stubbing mechanism and public cloud mocks
+- populate any required data into the system being tested
+- create a "test-cases" volume
+- generate and/or pull the test cases to be executed from the test case repository, and store them in the "test-cases" volume
+- set up the "test runner" system/s in separate node/s, and mount the "test-cases" and "test-results" volumes to the "test runner" system/s
+
+### Execution steps
+- execute test cases on the "test runner"/s, reading test cases from the "test-cases" volume and writing test results to the "test-results" volume
+
+### Test environment tear-down
+- delete the Kubernetes namespace for the test environment
