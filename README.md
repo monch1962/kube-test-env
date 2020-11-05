@@ -30,9 +30,10 @@ A generic functional automation environment architecture is as follows ...
 ### Generic performance test infrastucture
 A generic performance test environment architecture is as follows...
 
-## Test infrastructure build steps
+## Test infrastructure build steps (long lived)
 - create a Kubernetes volume to store test execution results until they are processed
 - configure the test results alerting mechanism to update the test results alerting mechanism and/or the test management system as new test execution results become available
+- (optional) create a Kubernetes namespace "test-data-generation", deploy a test data generation solution to this namespace, and expose it as a service so it can be consumed from other test namespaces
 - deploy and configure a CI/CD toolset to execute test cases as necessary
 
 ## Test environments (on demand) 
